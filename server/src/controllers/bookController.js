@@ -50,19 +50,19 @@ const getBookById = async (req, res) => {
 
 // Update book details with image upload
 const updateBook = async (req, res) => {
-    const { title, author, genre, publicationDate, availableCopies } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-  
-    try {
+  const { title, author, genre, publicationDate, availableCopies } = req.body;
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+  try {
       const book = await Book.findById(req.params.id);
-  
+
       if (!book) {
-        return res.status(404).json({ message: 'Book not found' });
+          return res.status(404).json({ message: 'Book not found' });
       }
 
       // Ensure the logged-in user is the creator of the book
       if (book.creator.toString() !== req.user._id.toString()) {
-        return res.status(403).json({ message: 'You do not have permission to edit this book' });
+          return res.status(403).json({ message: 'You do not have permission to edit this book' });
       }
 
       // Update fields
@@ -70,17 +70,15 @@ const updateBook = async (req, res) => {
       book.author = author || book.author;
       book.genre = genre || book.genre;
       book.publicationDate = publicationDate || book.publicationDate;
-      book.availableCopies = availableCopies || book.availableCopies;
-      
-      if (imageUrl) {
-        book.imageUrl = imageUrl; // Update image URL if a new image is uploaded
-      }
-  
+      book.availableCopies = availableCopies !== undefined ? availableCopies : book.availableCopies;
+      book.imageUrl = imageUrl || book.imageUrl;
+
       await book.save();
-      res.json(book);
-    } catch (error) {
+
+      res.status(200).json(book);
+  } catch (error) {
       res.status(500).json({ message: 'Error updating book' });
-    }
+  }
 };
   
 // Delete a book
@@ -99,7 +97,7 @@ const deleteBook = async (req, res) => {
       return res.status(403).json({ message: 'You do not have permission to delete this book' });
     }
 
-    await book.remove();
+    await book.deleteOne();
     res.json({ message: 'Book deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting book' });
@@ -162,7 +160,7 @@ const getBooksByCreator = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const books = await Book.find({ creator: userId });
+    const books = await Book.find({ creator: userId }).populate('creator', 'email'); 
 
     if (!books || books.length === 0) {
       return res.status(404).json({ message: 'No books found created by this user' });

@@ -74,7 +74,7 @@ const BookDetailPage = () => {
       <div className="bg-white shadow-lg rounded-lg p-8 flex items-start">
         {/* Book Cover */}
         <img
-          src={book.imageUrl ? `http://localhost:5000${book.imageUrl}` : '/default-book.jpg'}
+          src={book.imageUrl ? `https://laibrerymanagement.onrender.com${book.imageUrl}` : '/default-book.jpg'}
           alt={book.title}
           className="w-1/3 h-auto object-cover rounded-md mr-8"
         />

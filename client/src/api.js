@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', // Replace with your backend API URL
+  baseURL: 'https://laibrerymanagement.onrender.com/api/', // Replace with your backend API URL
 });
 
 // Add token to the request headers if available

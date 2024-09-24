@@ -6,11 +6,7 @@ const connectDB = async () => {
     return; 
   }
   try {
-    await mongoose.connect(Config.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      maxPoolSize: 10, 
-    });
+    await mongoose.connect(Config.MONGO_URI);
     console.log('Database connected 🚀');
   } catch (err) {
     console.error('Error connecting to the database:', err);

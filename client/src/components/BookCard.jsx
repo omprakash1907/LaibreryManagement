@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const BookCard = ({ book, userEmail, showActions = false }) => {
-  const baseImageUrl = 'http://localhost:5000'; // Update this if necessary
+  const baseImageUrl = 'https://laibrerymanagement.onrender.com'; // Update this if necessary
   const navigate = useNavigate();
   
   // Handle delete book
